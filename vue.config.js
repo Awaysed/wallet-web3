@@ -6,6 +6,7 @@ const Components1 = require("unplugin-vue-components/webpack");
 console.log(1111,Components1);
 module.exports = defineConfig({
   transpileDependencies: true,
+  lintOnSave: false,
   configureWebpack: {
     plugins: [
       new NodePolyfillPlugin(),
