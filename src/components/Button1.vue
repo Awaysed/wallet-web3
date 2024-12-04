@@ -51,10 +51,11 @@ const confirm = () => {
   mnenonic.value = bip39.generateMnemonic();
   console.log("助记词", mnenonic.value);
 };
-const btnMnenonic = () => {
+const btnMnenonic = async() => {
   mnenonicInput.value = mnenonic.value
   if (mnenonicInput.value == mnenonic.value) {
-    seed.value = bip39.mnemonicToSeed(mnenonic.value);
+    seed.value = await bip39.mnemonicToSeed(mnenonic.value);
+    console.log(333,seed.value);
     const hdWallet = hdkey.fromMasterSeed(seed.value); // 钱包
   } else {
     showNotify("不一致");
