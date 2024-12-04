@@ -36,6 +36,7 @@ import * as bip39 from "bip39";
 import { hdkey } from "ethereumjs-wallet";
 import "vant/es/dialog/style";
 import { ref } from "vue";
+import store2 from "store2";
 let show = ref(false);
 const passwordValue = ref(""); // 密码
 let mnemonic = ref(""); // 助记词
@@ -46,32 +47,52 @@ const seed = ref("");
 const createWallet = () => {
   show.value = true;
 };
+// 确定创建账号
 const confirm = () => {
   passwordValue.value = "";
-  mnemonic.value = bip39.generateMnemonic();
+  const walletInfo = store2.get("walletInfo") || [];
+  mnemonic.value =
+    walletInfo.length > 0
+      ? walletInfo[0]["mnemonic"]
+      : bip39.generateMnemonic();
   console.log("助记词", mnemonic.value);
+  if (walletInfo) {
+    btnmnemonic();
+  }
 };
-const btnmnemonic = async() => {
-  mnemonicInput.value = mnemonic.value
-  if (mnemonicInput.value == mnemonic.value) {
+const btnmnemonic = async () => {
+  mnemonicInput.value = mnemonic.value;
+  const storeWallet = store2.get("walletInfo") || [];
+
+  if (mnemonicInput.value !== mnemonic.value && storeWallet.length === 0) {
+    console.log(9999);
+    return;
+  } else {
     seed.value = await bip39.mnemonicToSeed(mnemonic.value);
     const hdWallet = hdkey.fromMasterSeed(seed.value); // 钱包
-    const keyPair = hdWallet.derivePath("m/44'/60'/0'/0/0") // 密钥对(m/子树/币种/账户/外部链/地址索引)
-    const wallet  = keyPair.getWallet() 
-    const lowerCaseAddress = wallet.getAddressString()
-    const CheckSumAddress = wallet.getAddressString()
-    const privateKey = wallet.getPrivateKey().toString('hex')
-    const keyStore = await wallet.toV3(passwordValue.value)
-    const walletInfo = {
-      address:lowerCaseAddress,
+
+    const addressIndex = storeWallet.length === 0 ? 0 : storeWallet.length + 1;
+
+    const keyPair = hdWallet.derivePath(`m/44'/60'/0'/0/${addressIndex}`); // 密钥对(m/子树/币种/账户/外部链/地址索引)
+
+    const wallet = keyPair.getWallet();
+
+    const lowerCaseAddress = wallet.getAddressString();
+    const CheckSumAddress = wallet.getAddressString();
+    const privateKey = wallet.getPrivateKey().toString("hex");
+    const keyStore = await wallet.toV3(passwordValue.value);
+
+    const walletObj = {
+      id: addressIndex,
+      address: lowerCaseAddress,
       privateKey,
       keyStore,
-      mnemonic:mnemonic.value,
-      balance:0
-    }
-    console.log(6666,walletInfo);
-  } else {
-    showNotify("不一致");
+      mnemonic: mnemonic.value,
+      balance: 0,
+    };
+    storeWallet.push(walletObj);
+
+    store2("walletInfo", storeWallet);
   }
 };
 </script>
