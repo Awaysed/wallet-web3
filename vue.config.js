@@ -15,10 +15,5 @@ module.exports = defineConfig({
       // AutoImport({ resolvers: [VantResolver()] }),
       Components1.default({ resolvers: [VantResolver()] }),
     ],
-    // resolve: {
-    //   alias: {
-    //     process: "process/browser",
-    //   },
-    // },
   },
 });

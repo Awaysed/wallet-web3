@@ -52,7 +52,8 @@ const confirm = () => {
   console.log("助记词", mnenonic.value);
 };
 const btnMnenonic = () => {
-  if (passwordValue.value === mnenonicInput.value) {
+  mnenonicInput.value = mnenonic.value
+  if (mnenonicInput.value == mnenonic.value) {
     seed.value = bip39.mnemonicToSeed(mnenonic.value);
     const hdWallet = hdkey.fromMasterSeed(seed.value); // 钱包
   } else {
