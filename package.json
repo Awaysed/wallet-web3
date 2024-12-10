@@ -15,6 +15,7 @@
     "ethereumjs-util": "^7.1.5",
     "ethereumjs-wallet": "^1.0.2",
     "less": "^4.2.0",
+    "less-loader": "^12.2.0",
     "store.js": "^1.0.4",
     "store2": "^2.14.3",
     "vant": "^4.9.9",

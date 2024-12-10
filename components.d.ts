@@ -10,6 +10,7 @@ declare module 'vue' {
     AccountList: typeof import('./src/components/AccountList.vue')['default']
     Button1: typeof import('./src/components/Button1.vue')['default']
     VanButton: typeof import('vant/es')['Button']
+    VanCell: typeof import('vant/es')['Cell']
     VanCellGroup: typeof import('vant/es')['CellGroup']
     VanDialog: typeof import('vant/es')['Dialog']
     VanField: typeof import('vant/es')['Field']
