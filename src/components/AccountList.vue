@@ -32,6 +32,7 @@ const walletInfoC = computed(() => {
     return item;
   });
 });
+//
 </script>
 
 <style scoped lang="less">
